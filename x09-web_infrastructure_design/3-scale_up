@@ -1,0 +1,90 @@
+# Scale Up Web Infrastructure
+
+This project demonstrates the design and implementation of a **scaled web infrastructure** with a high availability, load balancing, and proper component separation following enterprise-grade architecture principles.
+
+## Infrastructure Components
+
+### Required Components
+
+1. HAProxy Load Balancer (Cluster Setup)
+2. Nginx Web Server (Horizontal Scaling)
+3. Application Servers (Component Separation)
+4. Database Read Replica (Master-Slave Replication)
+
+---
+
+## Scale Up Web Infrastructure Architecture
+
+View the diagram in via [Lucid Chart](https://lucid.app/lucidspark/fff18197-0882-44a6-9e9c-688925ac40f7/edit?viewport_loc=-2881%2C-2527%2C7148%2C6893%2C0_0&invitationId=inv_06b94c2c-599c-4363-9225-ca23c7d0444f) or below.
+
+![Scale Up Web Infrastructure](./3-scale_up.png)
+
+---
+
+## Technical Implementation
+
+### Load Balancer Cluster (HAProxy)
+
+**Why I Added The Load Balancer Clustering:**
+
+The primary LB handles all traffic while the secondary remains on standby. If the primary fails, the secondary automatically takes over using heartbeat monitoring and virtual IP fail-over. This ensures high and accurate up-time even during the load balancer's maintenance or hardware failures.
+
+### Web Server Layer (Nginx)
+
+**Why I Added The Additional Web Servers:**
+
+For horizontal scaling for static content delivery and request handling. Two Nginx servers can handle significantly more concurrent connections than one and doubles the capacity. They also provide redundancy, if one web server fails, the load balancer routes traffic to the healthy server.
+
+### Application Server Layer (Gunicorn/Django)
+
+**Why I Separated Application Servers:**
+
+Separates application processing from web serving and provides horizontal scaling for dynamic content. Application servers are CPU-intensive for business logic processing. Having two servers allows a DEVOps team to handle more simultaneous user sessions and complex computations while maintaining lower value response times.
+
+### Database Layer (Master-Slave Replication)
+
+**Why I Added Database Replication**:
+
+A single database creates a performance bottleneck where all read and write operations compete for resources. With the Master-Slave replication, write operations (`INSERT`, `UPDATE`, `DELETE`) go to the master while read operations (`SELECT`) use the dedicated replica. This eliminates database as a single point of failure, and enables geographic distribution for global applications.
+
+---
+
+## Web Server vs Application Server
+
+### Key Differences Explained
+
+| Aspect | Web Server (Nginx) | Application Server (Gunicorn) |
+|--------|-------------------|------------------------------|
+| **Primary Role** | HTTP request handling, static content | Business logic execution, dynamic content |
+| **Optimization** | I/O operations, concurrent connections | CPU processing, memory management |
+| **Content Type** | Static files (HTML, CSS, JS, images) | Dynamic responses (API, database queries) |
+| **Protocols** | HTTP/HTTPS, SSL/TLS termination | Application protocols (WSGI, Django) |
+| **Scaling Method** | Connection-based | Process-based (worker processes) |
+| **Resource Usage** | Low CPU, high I/O bandwidth | High CPU, moderate memory |
+
+### Request Flow Example
+
+```text
+1. User requests: GET /api/users/profile
+2. Load Balancer → Routes to healthy Web Server
+3. Web Server → Checks if static content (No)
+4. Web Server → Proxies to Application Server
+5. Application Server → Processes Django view
+6. Application Server → Routes to Database Replica (READ operation)
+7. Database Replica → Returns user profile data
+8. Application Server → Returns JSON response
+9. Web Server → Adds caching headers
+10. Load Balancer → Returns to user
+
+Alternative flow for write operations:
+5. Application Server → Processes user profile update
+6. Application Server → Routes to Database Master (WRITE operation)  
+7. Database Master → Processes UPDATE, replicates to slave
+8. Application Server → Returns success response
+```
+
+---
+
+## Component Separation Strategy
+
+Following the separation of concerns principle, this improves performance, security, and maintainability. Web servers excel at static content and SSL termination, application servers focus on business logic, and database servers optimize for data operations. This allows independent scaling and specialized hardware optimization for each layer.

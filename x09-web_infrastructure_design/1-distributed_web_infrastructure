@@ -1,0 +1,127 @@
+# Distributed Web Infrastructure
+
+This project presents a three-server distributed web infrastructure design for hosting `www.foobar.com`. The architecture focuses on high availability, load distribution, and fault tolerance through redundancy and proper component separation.
+
+---
+
+## Infrastructure Components
+
+### Required Components
+
+- **2 Application Servers**: Redundant web and application servers.
+- **1 Load Balancer**: HAproxy for traffic distribution.
+- **1 Web Server**: Nginx on each application server.
+- **1 Application Server**: Business logic processing on each server.
+- **1 Database Cluster**: MySQL Primary-Replica configuration.
+- **1 Application Codebase**: Deployed across both servers.
+
+---
+
+## Distributed Web Infrastructure Architecture
+
+View the diagram via [Lucid Chart](https://lucid.app/lucidchart/8aa649db-84db-4a6c-9e07-e656ec30b2bd/edit?viewport_loc=368%2C-958%2C3377%2C2882%2C0_0&invitationId=inv_12f74ad3-97cb-47c7-9327-942c25e70a1f) or below.
+
+![Distributed Web Infrastructure](./1-distributed_web_infrastructure.png)
+
+### Traffic Flow
+
+1. User requests `www.foobar.com`.
+2. DNS resolves to Load Balancer IP.
+3. HAproxy distributes request using round-robin algorithm.
+4. Request forwarded to Server 1 or Server 2.
+5. Nginx serves static content or forwards to application server
+6. Application server processes request and queries database
+7. Database returns data (Primary for writes, either for reads)
+8. Response travels back to the user through reverse path.
+
+---
+
+## Load Balancer Configuration
+
+### Distribution Algorithm
+
+- **Algorithm**: Round-robin.
+- **Behavior**: Requests distributed sequentially (Server 1 to Server 2 to Server 1...).
+- **Benefits**: Even load distribution across available servers.
+
+### Active-Active Setup
+
+- **Configuration**: Both servers actively handle requests.
+- **Advantages**: Maximum resource utilization, better performance.
+- **Alternative**: Active-Passive (one server on standby).
+
+---
+
+## Database Configuration
+
+### Primary-Replica Cluster
+
+- **Primary Node**: Handles all write operations (INSERT, UPDATE, DELETE).
+- **Replica Node**: Handles read operations, maintains data backup.
+- **Replication**: Automatic synchronization from Primary to Replica.
+- **Application Logic**: Writes to Primary, reads from either node.
+
+### Data Flow
+
+```text
+Application → Primary DB (writes) → Replica DB (replication)
+Application → Replica DB (reads) ← Primary DB (backup reads)
+```
+
+---
+
+## Infrastructure Components (Explained)
+
+### 2 Servers
+
+- **Purpose**: To provide redundancy and distribute the workload.
+- **Benefit**: If one server fails, the other can continue serving requests, ensuring high availability and better performance through load distribution.
+
+### Web Server (Nginx)
+
+- **Purpose**: To serves static content efficiently, handles SSL termination, manages compression, and acts as a reverse proxy to the application server.
+- **Benefit**: Efficient static file serving and concurrent connection handling.
+
+### Application Server
+
+- **Purpose**: To process dynamic content and business logic.
+- **Benefit**: Separation of concerns, and better resource allocation in handling database interactions and complex computations.
+
+### HAproxy Load Balancer
+
+- **Purpose**: To distribute incoming traffic across multiple servers.
+- **Benefit**: Prevents a single server overload, enables fault tolerance and horizontal scaling.
+
+### Application Files (Codebase)
+
+- **Purpose**: It contains the website's source code, assets, and configurations.
+- **Benefit**: Deployed on both servers to ensure consistency and availability.
+
+### MySQL Database
+
+- **Purpose**: Persistent data storage with ACID compliance, and robust querying capabilities.
+- **Benefit**: Reliable data management with replication support.
+
+---
+
+## Known Issues & Limitations
+
+### Single Points of Failure (SPOF)
+
+- **Load Balancer**: If HAproxy fails, entire system becomes inaccessible
+- **Primary Database**: If primary MySQL fails, no write operations possible
+- **Network Infrastructure**: Single network connection points can cause outages
+
+### Security Issues
+
+- **No Firewall**: All servers exposed to public internet without filtering.
+- **No HTTPS**: Data transmitted in plain text, vulnerable to interception.
+- **Access Control**: Lack of proper authentication and authorization mechanisms
+- **Database Security**: Direct database access without proper network segmentation
+
+### Monitoring Gaps
+
+- **System Health**: No visibility into server performance, uptime, or resource usage.
+- **Application Metrics**: No monitoring of response times, error rates, or user experience.
+- **Security Events**: No detection of suspicious activities or security breaches.
+- **Capacity Planning**: No data for scaling decisions or resource optimization.

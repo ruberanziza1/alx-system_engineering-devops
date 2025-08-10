@@ -1,0 +1,84 @@
+# Secured and Monitored Web Infrastructure
+
+A three-server web infrastructure design for hosting `www.foobar.com` with comprehensive security, SSL encryption, and monitoring capabilities. This infrastructure implements a multi-layered security approach with load balancing and comprehensive monitoring for a production web application.
+
+---
+
+## Infrastructure Components
+
+### Required Components
+
+- **3 Web Servers**: Nginx web servers with application and database components.
+- **1 Load Balancer**: HAProxy with SSL termination.
+- **3 Firewalls**: Multi-layer security protection.
+- **1 SSL Certificate**: HTTPS encryption for secure communications.
+- **3 Monitoring Clients**: Sumologic data collectors for system monitoring.
+
+---
+
+## Secured and Monitored Web Infrastructure Architecture
+
+View the diagram via [Lucid Chart](https://lucid.app/lucidchart/8aa649db-84db-4a6c-9e07-e656ec30b2bd/edit?viewport_loc=368%2C-958%2C3377%2C2882%2C0_0&invitationId=inv_12f74ad3-97cb-47c7-9327-942c25e70a1f) or below.
+
+![Secured and Monitored Web Infrastructure](./2-secured_and_monitored_web_infrastructure.png)
+
+---
+
+## Security Features
+
+### Multi-Layer Firewall Protection
+
+- **External Firewall**: First line of defense, blocks malicious traffic from the internet before it reaches our infrastructure.
+- **Internal Network Firewall**: Protects the internal network between load balancer and servers, while controlling traffic flow.
+- **Server-Level Firewall**: Host-based firewall on each server for granular protection and application-specific rules.
+
+### SSL/HTTPS Implementation
+
+- **Purpose**: It encrypts data transmission between users and the website.
+- **Security**: It prevents man-in-the-middle attacks and data interception.
+- **Trust**: It provides authentication that users are connecting to the legitimate `www.foobar.com`.
+- **SEO Benefits**: HTTPS is a ranking factor for search engines.
+- **Compliance**: Required for handling sensitive data and meeting industry standards.
+
+---
+
+## Monitoring System
+
+### Data Collection
+
+- **System Metrics**: CPU, memory, disk usage, network statistics via system calls.
+- **Application Logs**: Web server access logs, application error logs, database query logs.
+- **Custom Metrics**: Application-specific metrics like user sessions, transaction rates.
+- **Network Monitoring**: Response times, throughput, packet loss.
+
+### Monitoring Web Server QPS (Queries Per Second)
+
+To monitor web server Queries Per Second (QPS):
+
+1. **Web Server Logs**: Parse Nginx access logs to count requests per second.
+2. **Monitoring Agent**: Configure Sumologic agent to parse log files and calculate QPS metrics.
+3. **Real-time Dashboards**: Create dashboards showing current and historical QPS trends.
+4. **Alerting Rules**: Set up alerts when QPS exceeds normal thresholds or drops unexpectedly.
+5. **Log Analysis**: Use log aggregation to analyze request patterns and identify bottlenecks.
+
+---
+
+## Known Issues
+
+### 1. SSL Termination at Load Balancer
+
+- **Issue**: Traffic between load balancer and servers is unencrypted.
+- **Risk**: May violate security standards requiring end-to-end encryption and vulnerable to internal network attacks or eavesdropping.
+- **Solution**: Implement SSL re-encryption between load balancer and servers.
+
+### 2. Single MySQL Write Server
+
+- **Issue**: Single point of failure for database writes. If the write server fails, the entire application becomes read-only or fails.
+- **Risk**: All write operations must go through one server, limiting scalability and updates or maintenance require taking the write server offline.
+- **Solution**: Implement MySQL clustering with multiple write-capable nodes or master-master replication.
+
+### 3. Identical Server Components Design Issue (Monolithic)
+
+- **Issue**: All components (web, app, database) on every server waste resources and create unnecessary complexity.
+- **Risk**: The database accessible from all servers increases attack surface, resource inefficiency and scaling limitations.
+- **Solution**: Separate concerns with dedicated web servers, application servers, and database clusters for each service type.

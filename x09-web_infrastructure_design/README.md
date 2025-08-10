@@ -1,51 +1,76 @@
-# 0x09. Web infrastructure design 
+# Web Infrastructure Design
 
-## Resource
+This documentation provides a comprehensive overview of the web infrastructure, including its
+components, limitations, and setup instructions.
 
-- [Web Infrastructure](https://youtu.be/lQNEW76KdYg)
-- [What is a database](https://searchdatamanagement.techtarget.com/definition/database)
-- [What’s the difference between a web server and an app server?](https://www.youtube.com/watch?v=S97eKyv2b9M)
-- [DNS record types](https://pressable.com/?s=DNS&post_type=knowledgebase)
-- [Single point of failure](https://en.wikipedia.org/wiki/Single_point_of_failure)
-- [How to avoid downtime when deploying new code](https://softwareengineering.stackexchange.com/questions/35063/how-do-you-update-your-production-codebase-database-schema-without-causing-downt#answers-header)
-- [High availability cluster (active-active/active-passive)](https://docs.oracle.com/cd/E17904_01/core.1111/e10106/intro.htm#ASHIA712)
-- [What is HTTPS](https://www.instantssl.com/http-vs-https)
-- [What is a firewall](https://www.webopedia.com/definitions/firewall/)
-- [Load Balancing Algorithms and Techniques](https://kemptechnologies.com/load-balancer/load-balancing-algorithms-techniques/)
-- [Active/Passive vs. Active/Active](https://kemptechnologies.com/fr/white-papers/unfog-confusion-active-passive-activeactive-load-balancing/)
+## Table of Contents
 
-## Tasks
+- [Web Infrastructure Design](#web-infrastructure-design)
+  - [Table of Contents](#table-of-contents)
+  - [Simple Web Stack Infrastructure](#simple-web-stack-infrastructure)
+  - [Distributed Web Infrastructure](#distributed-web-infrastructure)
+  - [Secured and Monitored Web Infrastructure](#secured-and-monitored-web-infrastructure)
+  - [Scale Up Web Infrastructure](#scale-up-web-infrastructure)
+  - [Project Structure](#project-structure)
+  - [License](#license)
 
-<details>
-<summary><a href="./0-simple_web_stack.jpg">0. Simple web stack</a></summary><br>
-<a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/jdk2SN17/image.png' border='0' alt='image'/></a>
-<ul>
-  <li>Links from screenshot
-  <ul>
-      <li><a href="https://en.wikipedia.org/wiki/LAMP_%28software_bundle%29">LAMP stack</a></li>
-  </ul>
-  </li>
-</ul>
-</details>
+## Simple Web Stack Infrastructure
 
-<details>
-<summary><a href="./1-distributed_web_infrastructure.jpg">1. Distributed web infrastructure</a></summary><br>
-<a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/MTwSdKn5/image.png' border='0' alt='image'/></a>
-</details>
+This project demonstrates a simple web stack infrastructure consisting of a single server hosting all
+necessary components to serve a website. The infrastructure includes a web server, application server,
+database, and the application code, all running on one machine.
 
-<details>
-<summary><a href="./2-secured_and_monitored_web_infrastructure.jpg">2. Secured and monitored web infrastructure</a></summary><br>
-<a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/KYsZdtCJ/image.png' border='0' alt='image'/></a>
-</details>
+Read more about the [Simple Web Stack Infrastructure](./0-simple_web_stack).
 
-<details>
-<summary><a href="./3-scale_up.jpg">3. Scale up</a></summary><br>
-<a href='https://postimages.org/' target='_blank'><img src='https://i.postimg.cc/13ndnc2x/image.png' border='0' alt='image'/></a>
-<ul>
-  <li>Links from screenshot
-  <ul>
-      <li><a href="https://www.nginx.com/resources/glossary/application-server-vs-web-server/">Application server vs web server</a></li>
-  </ul>
-  </li>
-</ul>
-</details>
+---
+
+## Distributed Web Infrastructure
+
+This project presents a three-server distributed web infrastructure design for hosting `www.foobar.com`.
+The architecture focuses on high availability, load distribution, and fault tolerance through redundancy
+and proper component separation.
+
+Read more about the [Distributed Web Infrastructure](./1-distributed_web_infrastructure).
+
+---
+
+## Secured and Monitored Web Infrastructure
+
+A three-server web infrastructure design for hosting `www.foobar.com` with comprehensive security, SSL encryption, and monitoring capabilities. This infrastructure implements a multi-layered security approach with load balancing and comprehensive monitoring for a production web application.
+
+Read more about the [Secured and Monitored Web Infrastructure](./2-secured_and_monitored_web_infrastructure).
+
+---
+
+## Scale Up Web Infrastructure
+
+This project demonstrates the design and implementation of a **scaled web infrastructure** with high availability, load balancing, and proper component separation following enterprise-grade architecture principles.
+
+Read more about the [Scale Up Web Infrastructure](./3-scale_up).
+
+---
+
+## Project Structure
+
+```text
+alx-system_engineering-devops/
+├ 0x03-shell_variables_expansions
+└── 0x09-web_infrastructure_design/         
+    ├ 0_simple_web_stack_infrastructure.png
+    ├ 0_simple_web_stack
+    ├ 1-distributed_web_infrastructure
+    ├ 1-distributed_web_infrastructure.png  
+    ├ 2-secured_and_monitored_web_infrastructure
+    ├ 2-secured_and_monitored_web_infrastructure.png
+    ├ 3-scale_up
+    ├ 3-scale_up.png
+    └── README.md
+├ README.md
+```
+
+---
+
+## License
+
+This infrastructure design is provided for educational purposes as part of the ALX ProDEV Software
+Engineering Program.

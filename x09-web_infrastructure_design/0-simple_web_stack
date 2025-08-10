@@ -1,0 +1,70 @@
+# Simple Web Stack Infrastructure
+
+This project demonstrates a simple web stack infrastructure consisting of a single server hosting all necessary components to serve a website. The infrastructure includes a web server, application server, database, and the application code, all running on one machine.
+
+**Domain**: <www.foobar.com>  
+**Server IP**: 8.8.8.8  
+**Stack**: LAMP (Linux, Apache/Nginx, MySQL, PHP/Python)
+
+---
+
+## Infrastructure Components
+
+### Required Components
+
+- **1 Server**: Physical or virtual machine hosting all services.
+- **1 Web Server**: Nginx for handling HTTP requests.
+- **1 Application Server**: Runtime environment for application code.
+- **1 Application Files**: The website's codebase and assets.
+- **1 Database**: MySQL for data storage.
+- **1 Domain Name**: `foobar.com` with www record pointing to `8.8.8.8`.
+
+---
+
+## Simple Web Stack Infrastructure Architecture Diagram
+
+View the diagram via [Lucid Chart](https://lucid.app/lucidchart/7a2c980d-98ad-4410-9a97-dbe0b1f2e936/edit?view_items=mZpFFZoRKYfV&invitationId=inv_7e323575-4b6b-4d86-b0fd-c9c84239bafa) or below.
+
+![Simple Web Stack Infrastructure](./0_simple_web_stack_infrastructure.png)
+
+### Request Flow
+
+1. User enters `www.foobar.com` in their browser.
+2. DNS resolves domain to IP address `8.8.8.8`.
+3. Browser sends HTTP request to server.
+4. Nginx receives and processes the request.
+5. Static content served directly or forwarded to application server.
+6. Application server processes business logic and queries database.
+7. Response is sent back to the user's browser.
+
+---
+
+## Infrastructure Components (Explained)
+
+- **What is a Server?**: A server is a physical or virtual computer that provides services, resources, or data to other computers (clients) over a network. In our case, it's a single machine hosting all our web infrastructure components.
+
+- **Role of Domain Name**: The domain name (`foobar.com`) serves as a human-readable address that maps to the server's IP address (`8.8.8.8`). It makes the websites accessible without users needing to remember numerical IP addresses.
+
+- **DNS Record Type**: The "www" in <www.foobar.com> is a CNAME (Canonical Name) record or an A record that points to the server's IP address, allowing users to access the website using the www subdomain.
+
+- **Web Server Role (Nginx)**: Nginx handles HTTP requests from a users' browser, serves static content (CSS, JavaScript, images, etc.), and forwards dynamic requests to the application server. It acts as the first point of contact.
+
+- **Application Server Role**: The application server executes the business logic of the website, processes dynamic content, handles user interactions, and generates HTML responses based on the code base.
+
+- **Database Role (MySQL)**: MySQL stores and manages all persistent data for the website, including user accounts, content, configurations, and any other information that needs to be retrieved and modified.
+
+---
+
+## Communication Protocol
+
+The server communicates with a users' computer using the HTTP/HTTPS protocol over the internet. This standardized protocol enables web browsers to request and receive web pages, images, and other resources from the server.
+
+---
+
+## Infrastructure Issues & Limitations
+
+- **Single Point of Failure (SPOF)**: If the single server fails, the entire website becomes unavailable. There's **no redundancy** or **backup system** to maintain service continuity.
+
+- **Maintenance Downtime**: Any maintenance, updates, or code deployments require restarting services, causing temporary website unavailability. Users cannot access the site during maintenance hours or periods.
+
+- **Scalability Limitations**: The single server has limited resources (CPU, RAM, bandwidth). High traffic volumes can overwhelm the server, leading to slow response times or complete service failure.
